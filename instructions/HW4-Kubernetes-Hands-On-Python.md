@@ -1,0 +1,131 @@
+# Homework 4  
+Kubernetes Hands-On – Minikube Deployment (Python Version)  
+**CS 7319 – Software Architecture and Design**  
+**Instructor:** Dr. Isaac Chow  
+**Due Date:** September 21, 2025  
+
+---
+
+## Objective  
+Implement a **Python Flask REST API** that serves **five (5) inspirational quotes**—selected randomly on each request—from reputable sources (such as famous people). This app must be containerized with Docker and deployed on **Minikube** via a Kubernetes Deployment (4 replicas) exposed through a Service.  
+
+---
+
+## Functional Requirements  
+
+1. **Endpoint:**  
+   - `GET /api/quotes`  
+   - Returns a JSON array of **exactly 4 quotes** chosen at random from a local pool of at least **10 quotes**.  
+
+2. **Schema:**  
+   - Each quote object includes:  
+     - `text` → the quotation  
+     - `author` → attribution  
+
+3. **Port:**  
+   - Application listens on **8080** (align with container/Kubernetes settings).  
+
+4. **Homepage:**  
+   - A minimal static page at `/` that fetches and displays **five quotes** from `/api/quotes`.  
+
+---
+
+## Containerization & Kubernetes  
+
+1. **Dockerize** the Flask service and confirm it runs locally.  
+
+2. **Deploy to Minikube** using a Deployment with **4 replicas** and a Service for access (NodePort is acceptable in Minikube).  
+
+3. **Verification:**  
+   - Show that you can access the endpoint on Minikube.  
+
+---
+
+## Deliverables  
+
+1. **Screenshots** showing successful runs.  
+2. **Source Code** and **Dockerfile**.  
+3. **Kubernetes manifests** (`k8s.yaml`).  
+
+---
+
+## Useful Commands  
+
+### Build & Push Image  
+```bash
+eval $(minikube docker-env)
+docker build -t myflaskquotes:latest .
+docker login
+docker tag myflaskquotes:latest <your-dockerhub-username>/myflaskquotes:latest
+docker push <your-dockerhub-username>/myflaskquotes:latest
+```
+
+### Deploy to Kubernetes  
+```bash
+kubectl apply -f k8s.yaml
+kubectl get pods
+kubectl get svc
+minikube service flask-quotes-svc
+```
+
+---
+
+## Useful `kubectl` Commands  
+
+- **Apply manifests (Deployment + Service):**  
+  ```bash
+  kubectl apply -f k8s.yaml
+  ```
+
+- **Check what’s running:**  
+  ```bash
+  kubectl get pods
+  kubectl get deploy
+  kubectl get svc
+  ```
+
+- **Review replication and rollout status:**  
+  ```bash
+  kubectl rollout status deployment/<deployment-name>
+  ```
+
+- **Scale replicas (e.g., from 4 to 6):**  
+  ```bash
+  kubectl scale deployment/<deployment-name> --replicas=6
+  ```
+
+- **Inspect resource details:**  
+  ```bash
+  kubectl describe pods
+  kubectl describe svc
+  ```
+
+- **Access application endpoint (in Minikube):**  
+  ```bash
+  minikube service <service-name> --url
+  ```
+
+![Example Screenshot](imgs/instr_img1.png)
+---
+
+## Other Helpful Commands  
+
+- List pods across all namespaces:  
+  ```bash
+  kubectl get pods --all-namespaces
+  ```
+
+- Get more detail:  
+  ```bash
+  kubectl get pods -o wide
+  ```
+
+- View logs:  
+  ```bash
+  kubectl logs <pod-name>
+  ```
+
+- Stop the app entirely (scale to zero):  
+  ```bash
+  kubectl scale deployment/<deployment-name> --replicas=0
+  ```
