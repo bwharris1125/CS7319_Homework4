@@ -1,6 +1,6 @@
 [tool.ruff]
 select = ["E", "F", "D"]
-ignore = []
+ignore = ["D212", "D200"]
 line-length = 79
 
 [tool.isort]

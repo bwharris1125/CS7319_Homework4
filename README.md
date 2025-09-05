@@ -1,5 +1,9 @@
 # CS7319_Homework4
-_Kubernetes Hands-On – Minikube Deployment_ - Homework #4 for **CS 7319 Software Architecture & Design**   
+_Kubernetes Hands-On – Minikube Deployment_ - Homework #4 for **CS 7319 Software Architecture & Design**  
+
+
+
+# Homework Instructions
 **Instructor:** Dr. Isaac Chow  
 **Due Date:** September 21, 2025  
 _*Assignment modified to support Python rather than Java. Original instructions here: [HW_4-Kubernetes-Hands-On.pdf](instructions/HW4-Kubernetes-Hands-On.pdf)._  
