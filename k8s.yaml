@@ -1,0 +1,51 @@
+# Kubernetes Deployment and Service Template
+# Replace placeholders as needed for your application
+
+# LOOK INTO `OPENSHIFT` FOR MORE DETAIL ON DEPLOYMENTS
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-api
+  template:
+    metadata:
+      labels:
+        app: simple-api
+    spec:
+      containers:
+      - name: simple-api
+        image: <your-docker-image:tag>
+        ports:
+        - containerPort: 5000
+        env:
+        # - name: EXAMPLE_ENV_VAR
+        #   value: "value"
+        # Add volumeMounts if needed
+        # volumeMounts:
+        # - name: data-volume
+        #   mountPath: /app/data
+      # volumes:
+      # - name: data-volume
+      #   hostPath:
+      #     path: /path/on/host
+      #     type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-api-service
+spec:
+  selector:
+    app: simple-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: ClusterIP
+# Change type to NodePort or LoadBalancer if needed
