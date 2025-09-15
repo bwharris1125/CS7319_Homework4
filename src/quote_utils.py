@@ -32,7 +32,7 @@ def get_random_quotes(quotes, n=4):
 
 if __name__ == "__main__":
     quotes = load_quotes("src/data/quotes_extended.jsonl")
-    random_quotes = get_random_quotes(quotes, 1)
+    random_quotes = get_random_quotes(quotes, 4)
     print("\n")
     for i, q in enumerate(random_quotes, 1):
         print(f"{i}. “{q["text"]}” - {q["author"]}\n")
