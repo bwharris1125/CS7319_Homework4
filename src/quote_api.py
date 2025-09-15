@@ -21,33 +21,27 @@ class QuoteController:
     def setup_routes(self):
         """Set up flask routes for homepage and API."""
         @self.app.route("/")
-        def homepage(quotes=5):
+        def homepage(quote_num=5):
             """
-            Return a minimal static page that fetches and displays default 5
-            quotes from /api/quotes.
+            Return a minimal static page with quotes generated server-side.
             """
-            # Simple JS/HTML to fetch and display 4 quotes
-            html = '''
+            # Get random quotes server-side
+            random_quotes = get_random_quotes(self.quotes, quote_num)
+            
+            # Build quotes HTML
+            quotes_html = ""
+            for quote in random_quotes:
+                quotes_html += f'"{quote["text"]}<br>'
+                quotes_html += "&nbsp;&nbsp;&nbsp;&nbsp;- " + \
+                              f'{quote["author"]}<br><br>'
+            
+            html = f'''
             <!DOCTYPE html>
             <html>
             <head><title>Quotes</title></head>
             <body>
                 <h1>Inspirational Quotes</h1>
-                <div id="quotes"></div>
-                <script>
-                fetch(`/api/quotes?count=${quotes}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        const container = document.getElementById('quotes');
-                        data.forEach(q => {
-                            const div = document.createElement('div');
-                            div.innerHTML = `"${q.text}"<br>` +
-                                          `&nbsp;&nbsp;&nbsp;&nbsp;- ` +
-                                          `${q.author}<br><br>`;
-                            container.appendChild(div);
-                        });
-                    });
-                </script>
+                <div>{quotes_html}</div>
             </body>
             </html>
             '''
