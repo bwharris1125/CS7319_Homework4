@@ -21,12 +21,12 @@ class QuoteController:
     def setup_routes(self):
         """Set up flask routes for homepage and API."""
         @self.app.route("/")
-        def homepage():
+        def homepage(quotes=5):
             """
-            Return a minimal static page that fetches and displays four
+            Return a minimal static page that fetches and displays default 5
             quotes from /api/quotes.
             """
-            # Simple HTML/JS to fetch and display 4 quotes
+            # Simple JS/HTML to fetch and display 4 quotes
             html = '''
             <!DOCTYPE html>
             <html>
@@ -35,13 +35,15 @@ class QuoteController:
                 <h1>Inspirational Quotes</h1>
                 <div id="quotes"></div>
                 <script>
-                fetch('/api/quotes?count=4')
+                fetch(`/api/quotes?count=${quotes}`)
                     .then(res => res.json())
                     .then(data => {
                         const container = document.getElementById('quotes');
                         data.forEach(q => {
                             const div = document.createElement('div');
-                            div.innerHTML = `"${q.text}" - ${q.author}<br><br>`;
+                            div.innerHTML = `"${q.text}"<br>` +
+                                          `&nbsp;&nbsp;&nbsp;&nbsp;- ` +
+                                          `${q.author}<br><br>`;
                             container.appendChild(div);
                         });
                     });
