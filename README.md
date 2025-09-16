@@ -69,7 +69,7 @@ docker push <your-dockerhub-username>/myhello:latest
 kubectl apply -f k8s.yaml
 kubectl get pods
 kubectl get svc
-minikube service flask-quotes-svc
+minikube service cs7319-quotes-api
 ```
 
 ---
@@ -133,3 +133,55 @@ minikube service flask-quotes-svc
   ```bash
   kubectl scale deployment/<deployment-name> --replicas=0
   ```
+
+---
+
+## Notes (Quick Start)
+Minimal, nominal path to run locally with Minikube:
+
+1) Setup kubectl + minikube
+- If kubectl isn’t installed, you can use the one bundled with minikube:
+  ```bash
+  alias kubectl="minikube kubectl --"
+  ```
+- Start a local cluster (Docker driver is simplest on WSL/Linux):
+  ```bash
+  minikube start --driver=docker
+  ```
+
+2) Build and load the Docker image
+```bash
+docker build -t cs7319-quotes-api:latest .
+minikube image load cs7319-quotes-api:latest
+```
+
+3) Deploy manifests and wait for rollout
+```bash
+kubectl apply -f k8s.yaml
+kubectl rollout status deploy/cs7319-quote-api-deployment
+```
+
+4) Access the app (pick one)
+- Port-forward (simple and reliable):
+  ```bash
+  kubectl port-forward svc/cs7319-quote-api-service 8080:80
+  # in another terminal
+  curl http://localhost:8080/
+  curl http://localhost:8080/api/quotes?count=4
+  ```
+- Or get a direct URL from Minikube:
+  ```bash
+  minikube service cs7319-quote-api-service --url
+  ```
+
+5) Optional
+- Scale replicas (if not already set in k8s.yaml):
+  ```bash
+  kubectl scale deployment/cs7319-quote-api-deployment --replicas=4
+  ```
+- Reset cluster if needed:
+  ```bash
+  minikube delete && minikube start --driver=docker
+  ```
+
+_NOTE: GitLab CoPilot was used to assist in generating this README and converting the original PDF instructions to python._
