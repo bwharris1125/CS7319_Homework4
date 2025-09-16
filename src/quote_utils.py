@@ -10,8 +10,7 @@ def load_quotes(jsonl_path):
     """
     Load quotes from a JSONL file.
 
-    Each line should be a JSON object with 
-    'quote' and 'author'.
+    Each line should be a JSON object with 'quote' and 'author'.
     """
     quotes = []
     with open(jsonl_path, 'r', encoding='utf-8') as f:

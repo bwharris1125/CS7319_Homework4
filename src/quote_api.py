@@ -35,7 +35,7 @@ class QuoteController:
                 quotes_html += "&nbsp;&nbsp;&nbsp;&nbsp;- " + \
                               f'{quote["author"]}<br><br>'
             
-            html = f'''
+            html = f"""
             <!DOCTYPE html>
             <html>
             <head><title>Quotes</title></head>
@@ -44,12 +44,14 @@ class QuoteController:
                 <div>{quotes_html}</div>
             </body>
             </html>
-            '''
+            """
             return render_template_string(html)
 
         @self.app.route("/api/quotes")
         def api_quotes():
-            """Return a JSON array of random quotes (default 4, or ?count=N)."""
+            """
+            Return a JSON array of random quotes (default 4).
+            """
             from flask import request
             count = request.args.get('count', default=4, type=int)
             n = min(count, len(self.quotes))
