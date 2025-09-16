@@ -1,51 +1,44 @@
-# Kubernetes Deployment and Service Template
-# Replace placeholders as needed for your application
-
-# LOOK INTO `OPENSHIFT` FOR MORE DETAIL ON DEPLOYMENTS
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple-api-deployment
+  name: cs7319-quote-api-deployment
+  labels:
+    app: cs7319-quote-api
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
-      app: simple-api
+      app: cs7319-quote-api
   template:
     metadata:
       labels:
-        app: simple-api
+        app: cs7319-quote-api
     spec:
       containers:
-      - name: simple-api
-        image: <your-docker-image:tag>
+      - name: cs7319-quote-api-container
+        image: cs7319-quotes-api:latest
+        imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 5000
+        - containerPort: 8080 # The port your Flask app listens on
         env:
-        # - name: EXAMPLE_ENV_VAR
-        #   value: "value"
-        # Add volumeMounts if needed
-        # volumeMounts:
-        # - name: data-volume
-        #   mountPath: /app/data
-      # volumes:
-      # - name: data-volume
-      #   hostPath:
-      #     path: /path/on/host
-      #     type: Directory
+        - name: FLASK_ENV
+          value: production
+        # Add other environment variables as needed, e.g., database connection strings
+        # - name: DATABASE_URL
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: db-credentials
+        #       key: url
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: simple-api-service
+  name: cs7319-quote-api-service
 spec:
   selector:
-    app: simple-api
+    app: cs7319-quote-api
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5000
-  type: ClusterIP
-# Change type to NodePort or LoadBalancer if needed
+  - protocol: TCP
+    port: 80 # The port the service will listen on
+    targetPort: 8080 # The port on the container where the Flask app is running
+  type: ClusterIP # Use port-forward for local access in Minikube
