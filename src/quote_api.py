@@ -31,7 +31,7 @@ class QuoteController:
             # Build quotes HTML
             quotes_html = ""
             for quote in random_quotes:
-                quotes_html += f'"{quote["text"]}<br>'
+                quotes_html += f'"{quote["text"]}"<br>'
                 quotes_html += "&nbsp;&nbsp;&nbsp;&nbsp;- " + \
                               f'{quote["author"]}<br><br>'
             
