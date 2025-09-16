@@ -34,4 +34,6 @@ if __name__ == "__main__":
     random_quotes = get_random_quotes(quotes, 4)
     print("\n")
     for i, q in enumerate(random_quotes, 1):
-        print(f"{i}. “{q["text"]}” - {q["author"]}\n")
+        print(
+            f"{i}. “{q['text']}” - {q['author']}\n"
+        )
